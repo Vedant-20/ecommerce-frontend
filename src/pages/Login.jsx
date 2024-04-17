@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import signin from "../assets/signin.gif";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import Context from "../context";
 
 function Login() {
+  const navigate=useNavigate()
+  const {fetchUserDetails}=useContext(Context)
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({
     email: "",
@@ -20,24 +25,36 @@ function Login() {
         [name]: value,
       };
     });
-
-    
   };
 
-  const handleSubmit=(e)=>{
-    e.preventDefault()
-    console.log(data)
-  }
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    
+    try {
+      const response=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/signin`,data,{withCredentials:true})
+      // console.log(response)
+      localStorage.setItem('jwtToken',response?.data?.data)
+      
+      toast.success(response?.data?.message)
+      
+      navigate(`/`)
+      fetchUserDetails()
+    } catch (error) {
+      toast.error(error.message)
+    }
+  };
 
   return (
     <section id="login">
       <div className="mx-auto container p-4 ">
         <div className="bg-white p-4 w-full max-w-sm mx-auto rounded-md">
-          <div className="w-20 h-20 mx-auto ">
+
+        <div className="w-20 h-20 mx-auto ">
             <img src={signin} alt="signin logo" />
           </div>
+          
 
-          <form className="pt-6" onSubmit={handleSubmit}>
+          <form className="pt-6 flex flex-col gap-2" onSubmit={handleSubmit}>
             <div className="grid">
               <label>Email: </label>
               <div className="bg-slate-100 p-2">
@@ -77,7 +94,10 @@ function Login() {
               </Link>
             </div>
 
-            <button type="submit" className="px-6 py-2 w-full max-w-[150px]  border-2 font-bold border-gray-600 hover:border-gray-900 bg-white/85 hover:bg-slate-400 rounded-md hover:scale-110 transition-all mx-auto block mt-6">
+            <button
+              type="submit"
+              className="px-6 py-2 w-full max-w-[150px]  border-2 font-bold border-gray-600 hover:border-gray-900 bg-white/85 hover:bg-slate-400 rounded-md hover:scale-110 transition-all mx-auto block mt-6"
+            >
               Login
             </button>
           </form>
