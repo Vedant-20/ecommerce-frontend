@@ -51,7 +51,9 @@ function Header() {
 
         <div className="flex items-center gap-7">
           <div className="relative  flex justify-center">
-            <div className="text-blue-600 text-3xl cursor-pointer" onClick={()=>setMenuDisplay(prev=>!prev)}>
+            {
+              user?._id && (
+                <div className="text-blue-600 text-3xl cursor-pointer" onClick={()=>setMenuDisplay(prev=>!prev)}>
               {user?.profilePic ? (
                 <img
                   className="w-10 h-10 rounded-full"
@@ -62,11 +64,14 @@ function Header() {
                 <FaRegCircleUser />
               )}
             </div>
+              )
+            }
+            
             {user?.role==='ADMIN' && menuDisplay && (
               <div className="absolute bg-white bottom-0 top-11 h-fit p-2 shadow-lg rounded ">
                 <nav>
                   <Link
-                    to={`admin-panel`}
+                    to={`admin-panel/all-products`}
                     className="whitespace-nowrap hover:bg-slate-100 p-2"
                     onClick={()=>setMenuDisplay(prev=>!prev)}
                   >
