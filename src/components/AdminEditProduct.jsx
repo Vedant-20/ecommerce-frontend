@@ -7,7 +7,7 @@ import { MdDelete } from "react-icons/md";
 import axiosInstance from "../axiosInstance/axiosInstance";
 import { toast } from "react-toastify";
 
-function UploadProduct({ onClose, fetchData }) {
+function AdminEditProduct({ onClose, productData, fetchData }) {
   const productCategory = [
     {
       id: 1,
@@ -71,13 +71,14 @@ function UploadProduct({ onClose, fetchData }) {
     },
   ];
   const [data, setData] = useState({
-    productName: "",
-    brandName: "",
-    category: "",
-    productImage: [],
-    description: "",
-    price: "",
-    sellingPrice: "",
+    ...productData,
+    productName: productData?.productName,
+    brandName: productData?.brandName,
+    category: productData?.category,
+    productImage: productData?.productImage,
+    description: productData?.description,
+    price: productData?.price,
+    sellingPrice: productData?.sellingPrice,
   });
 
   const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
@@ -126,7 +127,7 @@ function UploadProduct({ onClose, fetchData }) {
     // console.log("CHecke submission", data);
     try {
       const response = await axiosInstance.post(
-        `/products/upload-product`,
+        `/products/update-product`,
         data
       );
       //   console.log("Uploaded REsponse", response);
@@ -138,12 +139,11 @@ function UploadProduct({ onClose, fetchData }) {
       toast.error(error.message);
     }
   };
-
   return (
     <div className="fixed w-full h-full bg-slate-200 bg-opacity-80 top-0 left-0 right-0 bottom-0 flex justify-center items-center">
       <div className="bg-white p-4 rounded-md w-full h-full max-w-2xl max-h-[80%] overflow-hidden">
         <div className="flex justify-between items-center pb-3">
-          <h2 className="font-bold text-lg">Upload Product</h2>
+          <h2 className="font-bold text-lg">Edit Product</h2>
           <div
             className="w-fit ml-auto cursor-pointer text-2xl hover:animate-spin"
             onClick={onClose}
@@ -214,7 +214,6 @@ function UploadProduct({ onClose, fetchData }) {
                 <p className="text-sm">Upload Product Image Here !</p>
                 <input
                   type="file"
-                  required
                   accept="image/*"
                   id="uploadImageInput"
                   className="hidden"
@@ -299,7 +298,7 @@ function UploadProduct({ onClose, fetchData }) {
           ></textarea>
 
           <button className="border-2 border-green-400 bg-green-200 transition-all hover:border-white hover:bg-green-400 py-2 px-4 rounded-md">
-            Upload Product
+            Update Product
           </button>
         </form>
       </div>
@@ -315,4 +314,4 @@ function UploadProduct({ onClose, fetchData }) {
   );
 }
 
-export default UploadProduct;
+export default AdminEditProduct;

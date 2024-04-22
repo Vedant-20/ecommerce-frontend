@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import UploadProduct from "../components/UploadProduct";
 import axiosInstance from "../axiosInstance/axiosInstance";
 import { toast } from "react-toastify";
+import AdminProductCard from "../components/AdminProductCard";
 
 function AllProducts() {
   const [openUploadProduct, setOpenUploadProduct] = useState(false);
@@ -10,7 +11,7 @@ function AllProducts() {
   const fetchAllProduct = async () => {
     try {
       const response = await axiosInstance.get(`/products/get-all-products`);
-      console.log("Produts", response);
+      // console.log("Produts", response);
       setAllProduct(response?.data?.data);
       toast.success(response?.data?.message);
     } catch (error) {
@@ -35,19 +36,19 @@ function AllProducts() {
 
       <div className="flex items-center gap-3 py-4">
         {allProduct?.map((product, index) => (
-          <div className="bg-white p-4 rounded-md " key={index}>
-            <img
-              src={product?.productImage[0]}
-              width={120}
-              height={120}
-              alt={product?.productName}
-            />
-          </div>
+          <AdminProductCard
+            data={product}
+            key={index + "allProducts"}
+            fetchData={fetchAllProduct}
+          />
         ))}
       </div>
 
       {openUploadProduct && (
-        <UploadProduct onClose={() => setOpenUploadProduct(false)} />
+        <UploadProduct
+          onClose={() => setOpenUploadProduct(false)}
+          fetchData={fetchAllProduct}
+        />
       )}
     </div>
   );
