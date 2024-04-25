@@ -7,14 +7,16 @@ function AdminProductCard({ data, fetchData }) {
   return (
     <div className="bg-white p-4 rounded-md ">
       <div className="w-40">
-        <img
-          src={data?.productImage[0]}
-          width={120}
-          height={120}
-          alt={data?.productName}
-          className="w-fit mx-auto"
-        />
-        <h1>{data?.productName}</h1>
+        <div className="w-32 h-32 flex justify-center items-center">
+          <img
+            src={data?.productImage[0]}
+            width={120}
+            height={120}
+            alt={data?.productName}
+            className=" mx-auto object-fill h-full"
+          />
+        </div>
+        <h1 className="text-ellipsis line-clamp-2">{data?.productName}</h1>
 
         <div>
           <p className="font-semibold">₹{data?.sellingPrice}.00</p>

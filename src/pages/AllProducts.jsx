@@ -34,7 +34,7 @@ function AllProducts() {
         </button>
       </div>
 
-      <div className="flex items-center gap-3 py-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6  items-center gap-3 py-4">
         {allProduct?.map((product, index) => (
           <AdminProductCard
             data={product}

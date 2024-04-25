@@ -3,6 +3,18 @@
 @tailwind utilities;
 
 
+html{
+    scroll-behavior: smooth;
+  }
+  
+  *{
+    -ms-overflow-style: none;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+
 body{
     @apply bg-slate-100
 }
