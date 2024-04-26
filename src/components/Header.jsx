@@ -11,7 +11,7 @@ import { setUserDetails } from "../store/userSlice";
 
 function Header() {
   const user = useSelector((state) => state?.user?.user);
-  
+
   const dispatch = useDispatch();
   const [menuDisplay, setMenuDisplay] = useState(false);
 
@@ -30,7 +30,7 @@ function Header() {
   };
 
   return (
-    <header className="h-16 shadow-md bg-white">
+    <header className="h-16 shadow-md bg-white fixed z-40 w-full">
       <div className="h-full container mx-auto flex items-center justify-between px-4">
         <Link to={"/"}>
           <div className="cursor-pointer">
@@ -51,29 +51,30 @@ function Header() {
 
         <div className="flex items-center gap-7">
           <div className="relative  flex justify-center">
-            {
-              user?._id && (
-                <div className="text-blue-600 text-3xl cursor-pointer" onClick={()=>setMenuDisplay(prev=>!prev)}>
-              {user?.profilePic ? (
-                <img
-                  className="w-10 h-10 rounded-full"
-                  src={user?.profilePic}
-                  alt={user?.name}
-                />
-              ) : (
-                <FaRegCircleUser />
-              )}
-            </div>
-              )
-            }
-            
-            {user?.role==='ADMIN' && menuDisplay && (
+            {user?._id && (
+              <div
+                className="text-blue-600 text-3xl cursor-pointer"
+                onClick={() => setMenuDisplay((prev) => !prev)}
+              >
+                {user?.profilePic ? (
+                  <img
+                    className="w-10 h-10 rounded-full"
+                    src={user?.profilePic}
+                    alt={user?.name}
+                  />
+                ) : (
+                  <FaRegCircleUser />
+                )}
+              </div>
+            )}
+
+            {user?.role === "ADMIN" && menuDisplay && (
               <div className="absolute bg-white bottom-0 top-11 h-fit p-2 shadow-lg rounded ">
                 <nav>
                   <Link
                     to={`admin-panel/all-products`}
                     className="whitespace-nowrap hover:bg-slate-100 p-2"
-                    onClick={()=>setMenuDisplay(prev=>!prev)}
+                    onClick={() => setMenuDisplay((prev) => !prev)}
                   >
                     Admin Panel
                   </Link>

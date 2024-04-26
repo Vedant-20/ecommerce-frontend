@@ -17,7 +17,7 @@ function CategoryList() {
       );
       setCategoryProduct(response?.data?.data);
       setLoading(false);
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       toast.error(error.message);
     } finally {
