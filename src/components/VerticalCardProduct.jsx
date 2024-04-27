@@ -1,7 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import fetchCategoryWiseProducts from "../helpers/fetchCategoryWiseProducts";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import addToCart from "../helpers/addToCart";
+import Context from "../context";
 
 function VerticalCardProduct({ category, heading }) {
   const [data, setData] = useState([]);
@@ -9,6 +11,7 @@ function VerticalCardProduct({ category, heading }) {
   const loadingList = new Array(13).fill(null);
   const [scroll, setScroll] = useState(0);
   const scrollElement = useRef();
+  const { fetchUserAddToCart } = useContext(Context);
 
   const fetchData = async () => {
     setLoading(true);
@@ -17,6 +20,11 @@ function VerticalCardProduct({ category, heading }) {
 
     setLoading(false);
     // console.log("Category Card Data", categoryProduct);
+  };
+
+  const handleAddToCart = async (e, id) => {
+    await addToCart(e, id);
+    fetchUserAddToCart();
   };
 
   useEffect(() => {
@@ -74,7 +82,10 @@ function VerticalCardProduct({ category, heading }) {
                   ₹{product?.price}.00
                 </p>
               </div>
-              <button className="bg-green-400 font-semibold hover:text-white hover:bg-green-600 hover:border-2 hover:border-white px-3 py-1 rounded-full">
+              <button
+                className="bg-green-400 font-semibold hover:text-white hover:bg-green-600 hover:border-2 hover:border-white px-3 py-1 rounded-full"
+                onClick={(e) => handleAddToCart(e, product?._id)}
+              >
                 Add To Cart
               </button>
             </div>

@@ -8,8 +8,8 @@ import { toast } from "react-toastify";
 import Context from "../context";
 
 function Login() {
-  const navigate=useNavigate()
-  const {fetchUserDetails}=useContext(Context)
+  const navigate = useNavigate();
+  const { fetchUserDetails, fetchUserAddToCart } = useContext(Context);
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({
     email: "",
@@ -27,20 +27,25 @@ function Login() {
     });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
-      const response=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/signin`,data,{withCredentials:true})
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/users/signin`,
+        data,
+        { withCredentials: true }
+      );
       // console.log(response)
-      localStorage.setItem('jwtToken',response?.data?.data)
-      
-      toast.success(response?.data?.message)
-      
-      navigate(`/`)
-      fetchUserDetails()
+      localStorage.setItem("jwtToken", response?.data?.data);
+
+      toast.success(response?.data?.message);
+
+      navigate(`/`);
+      fetchUserDetails();
+      fetchUserAddToCart();
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
   };
 
@@ -48,11 +53,9 @@ function Login() {
     <section id="login">
       <div className="mx-auto container p-4 ">
         <div className="bg-white p-4 w-full max-w-sm mx-auto rounded-md">
-
-        <div className="w-20 h-20 mx-auto ">
+          <div className="w-20 h-20 mx-auto ">
             <img src={signin} alt="signin logo" />
           </div>
-          
 
           <form className="pt-6 flex flex-col gap-2" onSubmit={handleSubmit}>
             <div className="grid">

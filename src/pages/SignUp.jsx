@@ -1,25 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import signin from "../assets/signin.gif";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { imageToBase64 } from '../helpers/imageToBase64';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-
-
+import { imageToBase64 } from "../helpers/imageToBase64";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { uploadImage } from "../helpers/uploadImage";
 
 function SignUp() {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [data, setData] = useState({
-    name:"",
+    name: "",
     email: "",
     password: "",
-    confirmPassword:"",
-    profilePic:""
+    confirmPassword: "",
+    profilePic: "",
   });
 
   const handleOnChange = (e) => {
@@ -31,79 +30,80 @@ function SignUp() {
         [name]: value,
       };
     });
-
-    
   };
 
-  const handleUploadPic=async(e)=>{
-      e.preventDefault();
-      const file=e.target.files[0]
+  const handleUploadPic = async (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
 
-      const imagePic=await imageToBase64(file)
+    const uploadImageCloudinary = await uploadImage(file);
 
-      setData((prev)=>{
-        return {
-          ...prev,
-          profilePic:imagePic
-        }
-      })
+    const imagePic = await imageToBase64(file);
 
-  }
+    setData((prev) => {
+      return {
+        ...prev,
+        profilePic: uploadImageCloudinary?.secure_url || imagePic,
+      };
+    });
+  };
 
-  const handleSubmit=async(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(data.password===data.confirmPassword){
-      const signupdata=JSON.stringify(data)
+    if (data.password === data.confirmPassword) {
+      const signupdata = JSON.stringify(data);
 
       try {
-        const response=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/signup`,signupdata,{
-          withCredentials:true,
-          headers:{
-            "Content-Type": 'application/json'
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/users/signup`,
+          signupdata,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        })
+        );
 
         // console.log('Signup response',response)
 
-        toast.success(response.data.message)
+        toast.success(response.data.message);
 
-        navigate(`/login`)
+        navigate(`/login`);
       } catch (error) {
-        
-        toast.error(error.message)
+        toast.error(error.message);
       }
-    } else{
-      
-      toast.error('Password and Confirm Password does not match')
+    } else {
+      toast.error("Password and Confirm Password does not match");
     }
-    
-    
-  }
+  };
 
-
- 
   return (
     <section id="signup">
       <div className="mx-auto container p-4 ">
         <div className="bg-white p-4 w-full max-w-sm mx-auto rounded-md">
-        <div className="w-20 h-20 mx-auto relative  overflow-hidden rounded-full">
+          <div className="w-20 h-20 mx-auto relative  overflow-hidden rounded-full">
             <div>
               <img src={data.profilePic || signin} alt="signin logo" />
             </div>
-            <form >
-            <label >
-            <div className="text-xs bg-opacity-80 cursor-pointer bg-slate-200 pb-4 pt-1 text-center absolute bottom-0 w-full">
-              Upload Photo
-            </div>
-              <input className='hidden' accept='image/*' type="file" onChange={handleUploadPic} />
-            </label>
-            
+            <form>
+              <label>
+                <div className="text-xs bg-opacity-80 cursor-pointer bg-slate-200 pb-4 pt-1 text-center absolute bottom-0 w-full">
+                  Upload Photo
+                </div>
+                <input
+                  className="hidden"
+                  accept="image/*"
+                  type="file"
+                  onChange={handleUploadPic}
+                />
+              </label>
             </form>
           </div>
 
           <form className="pt-6 flex flex-col gap-2" onSubmit={handleSubmit}>
-          <div className="grid">
+            <div className="grid">
               <label>Name: </label>
               <div className="bg-slate-100 p-2">
                 <input
@@ -150,7 +150,6 @@ function SignUp() {
                   <span>{showPassword ? <FaEyeSlash /> : <FaEye />}</span>
                 </div>
               </div>
-              
             </div>
             <div>
               <label>Confirm Password: </label>
@@ -168,13 +167,17 @@ function SignUp() {
                   className="cursor-pointer text-xl"
                   onClick={() => setShowConfirmPassword((prev) => !prev)}
                 >
-                  <span>{showConfirmPassword ? <FaEyeSlash /> : <FaEye />}</span>
+                  <span>
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
                 </div>
               </div>
-              
             </div>
 
-            <button type="submit" className="px-6 py-2 w-full max-w-[150px]  border-2 font-bold border-gray-600 hover:border-gray-900 bg-white/85 hover:bg-slate-400 rounded-md hover:scale-110 transition-all mx-auto block mt-6">
+            <button
+              type="submit"
+              className="px-6 py-2 w-full max-w-[150px]  border-2 font-bold border-gray-600 hover:border-gray-900 bg-white/85 hover:bg-slate-400 rounded-md hover:scale-110 transition-all mx-auto block mt-6"
+            >
               SignUp
             </button>
           </form>
@@ -191,7 +194,7 @@ function SignUp() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-export default SignUp
+export default SignUp;

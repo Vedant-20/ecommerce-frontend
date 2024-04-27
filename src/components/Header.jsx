@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import { GrSearch } from "react-icons/gr";
@@ -8,11 +8,13 @@ import { useSelector, useDispatch } from "react-redux";
 import axiosInstance from "../axiosInstance/axiosInstance";
 import { toast } from "react-toastify";
 import { setUserDetails } from "../store/userSlice";
+import Context from "../context";
 
 function Header() {
   const user = useSelector((state) => state?.user?.user);
 
   const dispatch = useDispatch();
+  const context = useContext(Context);
   const [menuDisplay, setMenuDisplay] = useState(false);
 
   const handleLogout = async () => {
@@ -82,14 +84,16 @@ function Header() {
               </div>
             )}
           </div>
-          <div className="text-2xl relative">
-            <span>
-              <FaShoppingCart />
-            </span>
-            <div className="bg-red-500 text-white w-5 h-5 rounded-full p-1 flex items-center justify-center absolute -top-2 -right-3">
-              <p className="text-sm">0</p>
+          {user?._id && (
+            <div className="text-2xl relative">
+              <span>
+                <FaShoppingCart />
+              </span>
+              <div className="bg-red-500 text-white w-5 h-5 rounded-full p-1 flex items-center justify-center absolute -top-2 -right-3">
+                <p className="text-sm">{context?.cartProductCount}</p>
+              </div>
             </div>
-          </div>
+          )}
 
           <div>
             {user?._id ? (

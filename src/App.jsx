@@ -5,13 +5,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Context from "./context";
 import axiosInstance from "./axiosInstance/axiosInstance";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "./store/userSlice";
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [cartProductCount, setCardProductCount] = useState(0);
 
   const ForceLogOut = async () => {
     try {
@@ -46,12 +47,25 @@ function App() {
     }
   };
 
+  const fetchUserAddToCart = async () => {
+    try {
+      const response = await axiosInstance.get(`/users/countAddToCartProduct`);
+
+      setCardProductCount(response?.data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchUserDetails();
+    fetchUserAddToCart();
   }, []);
   return (
     <>
-      <Context.Provider value={{ fetchUserDetails }}>
+      <Context.Provider
+        value={{ fetchUserDetails, cartProductCount, fetchUserAddToCart }}
+      >
         <ToastContainer
           position="top-center"
           autoClose={2}
