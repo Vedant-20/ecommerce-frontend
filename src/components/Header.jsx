@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GrSearch } from "react-icons/gr";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
@@ -15,6 +15,7 @@ function Header() {
 
   const dispatch = useDispatch();
   const context = useContext(Context);
+  const navigate = useNavigate();
   const [menuDisplay, setMenuDisplay] = useState(false);
 
   const handleLogout = async () => {
@@ -28,6 +29,14 @@ function Header() {
       dispatch(setUserDetails(null));
     } catch (error) {
       toast.error(error.message);
+    }
+  };
+
+  const handleSearch = (e) => {
+    const { value } = e.target;
+
+    if (value) {
+      navigate(`/search?q=${value}`);
     }
   };
 
@@ -45,6 +54,7 @@ function Header() {
             type="text"
             placeholder="Search Product Here..."
             className="w-full outline-none"
+            onChange={handleSearch}
           />
           <div className="text-lg min-w-[50px] h-8 flex items-center justify-center bg-blue-600 rounded-r-full text-white">
             <GrSearch />
@@ -85,14 +95,14 @@ function Header() {
             )}
           </div>
           {user?._id && (
-            <div className="text-2xl relative">
+            <Link to={`/cart`} className="text-2xl relative">
               <span>
                 <FaShoppingCart />
               </span>
               <div className="bg-red-500 text-white w-5 h-5 rounded-full p-1 flex items-center justify-center absolute -top-2 -right-3">
                 <p className="text-sm">{context?.cartProductCount}</p>
               </div>
-            </div>
+            </Link>
           )}
 
           <div>

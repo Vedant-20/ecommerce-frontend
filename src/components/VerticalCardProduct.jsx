@@ -4,6 +4,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import addToCart from "../helpers/addToCart";
 import Context from "../context";
+import displayINRCurrency from "../helpers/displayCurrency";
 
 function VerticalCardProduct({ category, heading }) {
   const [data, setData] = useState([]);
@@ -58,7 +59,7 @@ function VerticalCardProduct({ category, heading }) {
         </button>
         {data?.map((product, index) => (
           <Link
-            to={`product/${product._id}`}
+            to={`/product/${product._id}`}
             key={index + "ProductId"}
             className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px]  bg-white rounded-md shadow-md "
           >
@@ -76,10 +77,10 @@ function VerticalCardProduct({ category, heading }) {
               <p className="capitalize text-slate-500">{product?.category}</p>
               <div className="flex gap-3">
                 <p className="text-green-600 font-bold ">
-                  ₹{product?.sellingPrice}.00
+                  {displayINRCurrency(product?.sellingPrice)}
                 </p>
                 <p className="text-red-500 text-sm line-through">
-                  ₹{product?.price}.00
+                  {displayINRCurrency(product?.price)}
                 </p>
               </div>
               <button
