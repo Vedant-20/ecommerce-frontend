@@ -73,10 +73,12 @@ function CategoryProduct() {
   return (
     <div className="container mx-auto p-4">
       {/* desktop version */}
-      <div className=" grid grid-cols-[200px,1fr]">
-        {/* left side */}
+      {/* <div className=" grid grid-cols-[200px,1fr]"> */}
+      {/* left side */}
+
+      {/*
         <div className="bg-white p-2 min-h-[calc(100vh-120px)] overflow-y-scroll">
-          {/* sort by */}
+          
           <div className="">
             <h3 className="text-base uppercase font-medium text-slate-500 border-b border-slate-300 pb-1">
               Sort By :
@@ -94,7 +96,7 @@ function CategoryProduct() {
             </form>
           </div>
 
-          {/* filter by */}
+          
           <div className="">
             <h3 className="text-base uppercase font-medium text-slate-500 border-b border-slate-300 pb-1">
               Category
@@ -120,18 +122,20 @@ function CategoryProduct() {
               ))}
             </form>
           </div>
-        </div>
-        {/* right side */}
-        <div>
-          {categoryName && (
-            <CategoryWiseProductDisplay
-              category={categoryName}
-              heading={"Recommended Products"}
-            />
-          )}
-        </div>
+        </div>  
+        */}
+
+      {/* right side */}
+      <div>
+        {categoryName && (
+          <CategoryWiseProductDisplay
+            category={categoryName}
+            heading={"Recommended Products"}
+          />
+        )}
       </div>
     </div>
+    // </div>
   );
 }
 
