@@ -27,6 +27,13 @@ function Login() {
     });
   };
 
+  const getTestCredentials = () => {
+    setData({
+      email: "gojo@example.com",
+      password: "Gojo@1234",
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -104,6 +111,13 @@ function Login() {
               Login
             </button>
           </form>
+
+          <button
+            onClick={getTestCredentials}
+            className="ml-24 mt-3 border-2 border-black bg-gradient-to-r from-teal-400 to-blue-500 hover:from-pink-500 hover:to-orange-500 text-white font-semibold px-4 py-2 rounded"
+          >
+            Get Test Credentials
+          </button>
 
           <p className="my-5">
             Don't have an account ?{" "}
